@@ -1,6 +1,7 @@
 // listeners --------------------------------------------------
 const buttons = document.querySelectorAll('#digit');
 const equals = document.querySelector('#equals');
+const clearButton = document.querySelector('#clear');
 
 // we use the .forEach method to iterate through each button
 buttons.forEach((button) => {
@@ -9,7 +10,7 @@ buttons.forEach((button) => {
     button.addEventListener('click', function () {
         let displayOne = document.querySelector('#display');
 
-        if (displayOne[displayOne.length - 1] == button.textContent){
+        if (displayOne[displayOne.length - 1] == button.textContent) {
             alert('error');
         }
         else
@@ -20,11 +21,13 @@ buttons.forEach((button) => {
 
 equals.addEventListener('click', finalOperator);
 
+clearButton.addEventListener('click', clear);
+
 
 //------------------------------------------------------------
 
 
-// Basic Operations ---------------------
+// Basic Operations -------------------------------------------------
 function addition(number1, number2) {
     let result = number1 + number2;
 
@@ -49,7 +52,7 @@ function division(number1, number2) {
     return result;
 }
 
-// applies one of the above operations -------
+// applies one of the above operations --------------------------------------------------
 function operate(operator, number1, number2) {
     let result;
 
@@ -65,7 +68,7 @@ function operate(operator, number1, number2) {
     }
 }
 
-// finalOperator
+// function doing most of the calculations -------------------------------------------------
 
 var currentNumber = 0;
 function finalOperator() {
@@ -80,15 +83,15 @@ function finalOperator() {
 
     for (a = 0; a < displayArray.length; a++) {
         if (
-            displayArray[a] == ('1') ||
-            displayArray[a] == ('2') ||
-            displayArray[a] == ('3') ||
-            displayArray[a] == ('4') ||
-            displayArray[a] == ('5') ||
-            displayArray[a] == ('6') ||
-            displayArray[a] == ('7') ||
-            displayArray[a] == ('8') ||
-            displayArray[a] == ('9')
+            displayArray[a].includes('1') ||
+            displayArray[a].includes('2') ||
+            displayArray[a].includes('3') ||
+            displayArray[a].includes('4') ||
+            displayArray[a].includes('5') ||
+            displayArray[a].includes('6') ||
+            displayArray[a].includes('7') ||
+            displayArray[a].includes('8') ||
+            displayArray[a].includes('9')
         ) {
             displayArray[a] = parseInt(displayArray[a]);
         }
@@ -120,16 +123,49 @@ function finalOperator() {
     }
 
     console.log(totalResult);
+
+    while (display.firstChild) {
+        display.removeChild(display.firstChild)
+    }
+
+    let newContent = document.createTextNode(totalResult);
+    display.appendChild(newContent);
 }
 
-// Populating the display
+// Populating the display ------------------------------------------------------------------------
 function populate(number) {
     const display = document.querySelector('#display');
+    let firstNumber = display.textContent;
 
+    let displayArray = firstNumber.split(/([.\*+-/_])/);
+    displayArray[0] = displayArray[0].trim();
 
+    console.log(displayArray);
+    //debugger;
 
-    let newContent = document.createTextNode(number);
+    if (number == '+' || number == '-' || number == '*' || number == '/') {
+        if (firstNumber[firstNumber.length - 1] == '+' || firstNumber[firstNumber.length - 1] == '-' || firstNumber[firstNumber.length - 1] == '*' ||
+            firstNumber[firstNumber.length - 1] == '/') {
+            console.error('You cannot enter two operators in a row !');
 
-    document.querySelector('#display').appendChild(newContent);
+        }
+        else {
+            let newContent = document.createTextNode(number);
 
+            display.appendChild(newContent);
+        }
+    } else {
+        let newContent = document.createTextNode(number);
+
+        display.appendChild(newContent);
+    }
+}
+
+// Clearing the display ------------------------------------------------------------------------------
+function clear() {
+    const display = document.querySelector('#display');
+
+    while (display.firstChild) {
+        display.removeChild(display.firstChild);
+    }
 }
