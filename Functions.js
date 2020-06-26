@@ -1,4 +1,4 @@
-// listeners
+// listeners --------------------------------------------------
 const buttons = document.querySelectorAll('#digit');
 const equals = document.querySelector('#equals');
 
@@ -6,15 +6,22 @@ const equals = document.querySelector('#equals');
 buttons.forEach((button) => {
 
     // and for each one we add a 'click' listener
-    button.addEventListener('click', function () { populate(button.textContent) });
+    button.addEventListener('click', function () {
+        let displayOne = document.querySelector('#display');
+
+        if (displayOne[displayOne.length - 1] == button.textContent){
+            alert('error');
+        }
+        else
+            populate(button.textContent)
+    });
 
 });
 
 equals.addEventListener('click', finalOperator);
 
 
-
-
+//------------------------------------------------------------
 
 
 // Basic Operations ---------------------
@@ -70,6 +77,7 @@ function finalOperator() {
     let displayArray = firstNumber.split(/([.\*+-/_])/);
     displayArray[0] = displayArray[0].trim();
 
+
     for (a = 0; a < displayArray.length; a++) {
         if (
             displayArray[a] == ('1') ||
@@ -86,15 +94,7 @@ function finalOperator() {
         }
     }
 
-    // console.log(displayArray + 'hey le cave'); // test console log
-
-
-
-
     totalResult = displayArray[0];
-
-    
-
     let i = 0;
     let checker = true;
 
@@ -120,22 +120,6 @@ function finalOperator() {
     }
 
     console.log(totalResult);
-
-    // console.log(displayArray + " conasse");
-    // console.log(totalResult);
-
-
-    // for (i = 0; i < displayArray.length; i++) {
-    //     if (displayArray[i] == '+'){
-    //         equationArray.push(displayArray[i]);
-    //         console.log('my guy' + currentNumber);
-    //     }else{
-    //         currentNumber += firstNumber[i];
-    //     }
-
-    // }
-
-
 }
 
 // Populating the display
